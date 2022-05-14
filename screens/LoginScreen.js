@@ -7,7 +7,6 @@
  */
 
 import React, {useState} from 'react';
-import type {Node} from 'react';
 import {
   Button,
   Image,
@@ -19,8 +18,10 @@ import {
   Text,
   TextInput,
   useColorScheme,
+  KeyboardAvoidingView,
   View,
 } from 'react-native';
+import axios from 'axios';
 
 import {
   Colors,
@@ -31,19 +32,46 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {useHeaderHeight} from '@react-navigation/elements';
+import {re} from '@babel/core/lib/vendor/import-meta-resolve';
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
+  const headerHeight = useHeaderHeight();
   const [pseudo, setPseudo] = useState('');
   const [password, setPassword] = useState('');
 
-  const goToHomePage = () => {
-    console.log('OK');
+  const baseUrl = 'http://127.0.0.1:8000';
+
+  const onSubmit = async () => {
+    if (!pseudo.trim() || !password.trim()) {
+      alert('Nom ou mot de passe invalide');
+      return;
+    }
+    try {
+      const response = await axios.post(`${baseUrl}/api/login`, {
+        username: pseudo,
+        password: password,
+      });
+      if (response.status === 200) {
+        setPseudo('');
+        setPassword('');
+        navigation.navigate('HomeScreen', {
+          user: response.data,
+          pseudo: pseudo,
+        });
+      } else {
+        throw new Error('Erreur');
+      }
+    } catch (error) {
+      console.log(error);
+      alert('Nom ou mot de passe incorrect');
+    }
   };
 
-  const submit = async () => {};
-
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.content}>
         <View>
           <Image
@@ -80,11 +108,11 @@ const LoginScreen = () => {
           <Button
             title="Se connecter"
             color={Platform.OS === 'ios' ? 'white' : '#659224'}
-            onPress={goToHomePage}
+            onPress={onSubmit}
           />
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
