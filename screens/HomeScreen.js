@@ -83,35 +83,6 @@ const HomeScreen = ({route}) => {
     });
   });
 
-  console.log(inventoriesNoPossession[0]);
-
-  const renderItem = ({item, i}) => (
-    <View key={i}>
-      <View
-        style={{
-          justifyContent: 'center',
-          flexDirection: 'column',
-          alignItems: 'center',
-          marginTop: 30,
-        }}>
-        <Text style={{fontSize: 20}}>{item}</Text>
-      </View>
-    </View>
-  );
-
-  const renderItemInventoryFalse = ({item, i}) => (
-    <View key={i} style={{flexDirection: 'column'}}>
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginTop: 30,
-        }}>
-        <Text style={{fontSize: 20}}>{item}</Text>
-      </View>
-    </View>
-  );
-
   const returnImage = () => {
     if (pseudo === 'cberthier') {
       return (
@@ -145,33 +116,46 @@ const HomeScreen = ({route}) => {
           textAlign: 'center',
         }}>
         Bienvenue, {'\n'}
-        {pseudo}
+        <Text>{pseudo}</Text>
       </Text>
       {returnImage()}
-      <ScrollView style={{width: '100%'}}>
-        <View style={{flexDirection: 'column'}}>
-          <Text
-            style={{
-              marginTop: 20,
-              textAlign: 'center',
-              fontSize: 30,
-              fontWeight: 'bold',
-            }}>
-            Objets en possession :
-          </Text>
-          {inventories[0]}
-        </View>
-        <View style={{flexDirection: 'column'}}>
-          <Text
-            style={{
-              marginTop: 20,
-              textAlign: 'center',
-              fontSize: 30,
-              fontWeight: 'bold',
-            }}>
-            Objets non possédés :
-          </Text>
-          {inventoriesNoPossession[0]}
+      <ScrollView style={{width: '100%', marginTop: 20, marginBottom: 20}}>
+        <View
+          style={{
+            backgroundColor: 'white',
+            borderRadius: 15,
+            width: '90%',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            paddingBottom: 30,
+            marginBottom: 30,
+          }}>
+          <View style={{flexDirection: 'column'}}>
+            <Text
+              style={{
+                marginTop: 20,
+                textAlign: 'center',
+                fontSize: 30,
+                fontWeight: 'bold',
+                color: '#659224',
+              }}>
+              Objets en possession :
+            </Text>
+            {inventories[0]}
+          </View>
+          <View style={{flexDirection: 'column'}}>
+            <Text
+              style={{
+                marginTop: 20,
+                textAlign: 'center',
+                fontSize: 30,
+                fontWeight: 'bold',
+                color: '#659224',
+              }}>
+              Objets non possédés :
+            </Text>
+            {inventoriesNoPossession[0]}
+          </View>
         </View>
       </ScrollView>
     </View>
