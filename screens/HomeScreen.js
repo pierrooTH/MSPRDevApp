@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, FlatList, Image} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  Image,
+  ScrollView,
+} from 'react-native';
 import axios from 'axios';
 import CheckBox from '@react-native-community/checkbox';
 
@@ -43,16 +50,40 @@ const HomeScreen = ({route}) => {
   }, []);
 
   const inventories = inventoryInPossession.map(i => {
-    return i.inventories.map(inv => {
-      return inv.name;
+    return i.inventories.map((inv, i) => {
+      return (
+        <View key={i} style={{flexDirection: 'column'}}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 30,
+            }}>
+            <Text style={{fontSize: 20}}>{inv.name}</Text>
+          </View>
+        </View>
+      );
     });
   });
 
   const inventoriesNoPossession = inventoryNoPossession.map(i => {
-    return i.inventories.map(inv => {
-      return inv.name;
+    return i.inventories.map((inv, i) => {
+      return (
+        <View key={i} style={{flexDirection: 'column'}}>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: 30,
+            }}>
+            <Text style={{fontSize: 20}}>{inv.name}</Text>
+          </View>
+        </View>
+      );
     });
   });
+
+  console.log(inventoriesNoPossession[0]);
 
   const renderItem = ({item, i}) => (
     <View key={i}>
@@ -63,7 +94,7 @@ const HomeScreen = ({route}) => {
           alignItems: 'center',
           marginTop: 30,
         }}>
-        <Text style={{fontSize: 30}}>{item}</Text>
+        <Text style={{fontSize: 20}}>{item}</Text>
       </View>
     </View>
   );
@@ -76,7 +107,7 @@ const HomeScreen = ({route}) => {
           alignItems: 'center',
           marginTop: 30,
         }}>
-        <Text style={{fontSize: 30}}>{item}</Text>
+        <Text style={{fontSize: 20}}>{item}</Text>
       </View>
     </View>
   );
@@ -113,24 +144,36 @@ const HomeScreen = ({route}) => {
           marginTop: 70,
           textAlign: 'center',
         }}>
-        Bienvenue{'\n'}
+        Bienvenue, {'\n'}
         {pseudo}
       </Text>
       {returnImage()}
-      <View style={{flexDirection: 'column'}}>
-        <FlatList
-          data={inventories}
-          renderItem={renderItem}
-          keyExtractor={item => item.id}
-        />
-      </View>
-      <View style={{flexDirection: 'column'}}>
-        <FlatList
-          data={inventoriesNoPossession}
-          renderItem={renderItemInventoryFalse}
-          keyExtractor={item => item.id}
-        />
-      </View>
+      <ScrollView style={{width: '100%'}}>
+        <View style={{flexDirection: 'column'}}>
+          <Text
+            style={{
+              marginTop: 20,
+              textAlign: 'center',
+              fontSize: 30,
+              fontWeight: 'bold',
+            }}>
+            Objets en possession :
+          </Text>
+          {inventories[0]}
+        </View>
+        <View style={{flexDirection: 'column'}}>
+          <Text
+            style={{
+              marginTop: 20,
+              textAlign: 'center',
+              fontSize: 30,
+              fontWeight: 'bold',
+            }}>
+            Objets non possédés :
+          </Text>
+          {inventoriesNoPossession[0]}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -142,8 +185,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   img: {
-    width: 200,
-    height: 150,
+    width: 270,
+    height: 200,
     marginRight: 'auto',
     marginLeft: 'auto',
     marginTop: 40,
