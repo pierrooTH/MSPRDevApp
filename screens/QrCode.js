@@ -60,7 +60,7 @@ const QrCode = ({route}) => {
             <Image
               source={{uri: qrCode[0].qr_code}}
               style={{
-                marginTop: 15,
+                marginTop: 20,
                 width: 300,
                 height: 300,
               }}

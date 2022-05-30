@@ -178,7 +178,7 @@ const HomeScreen = ({route}) => {
               marginTop: 30,
               backgroundColor: '#659224',
               color: 'white',
-              width: '50%',
+              width: '70%',
               marginRight: 'auto',
               marginLeft: 'auto',
               borderRadius: 8,
