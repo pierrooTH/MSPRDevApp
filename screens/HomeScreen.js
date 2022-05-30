@@ -1,6 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import axios from 'axios';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faXmark} from '@fortawesome/free-solid-svg-icons';
 
 const HomeScreen = ({route}) => {
   const pseudo = route.params.pseudo;
@@ -169,24 +179,35 @@ const HomeScreen = ({route}) => {
               marginLeft: 'auto',
               borderRadius: 8,
             }}>
-            <Button
-              color="white"
-              title="Voir les autres objets"
-              onPress={showObjects}
-            />
+            {!show && (
+              <Button
+                color="white"
+                title="Voir les autres objets"
+                onPress={showObjects}
+              />
+            )}
           </View>
           <View style={{flexDirection: 'column'}}>
             {show && (
-              <Text
-                style={{
-                  marginTop: 20,
-                  textAlign: 'center',
-                  fontSize: 2,
-                  fontWeight: 'bold',
-                  color: 'black',
-                }}>
-                Objets non possédés :
-              </Text>
+              <View>
+                <Text
+                  style={{
+                    marginTop: 20,
+                    textAlign: 'center',
+                    fontSize: 25,
+                    fontWeight: 'bold',
+                    color: 'black',
+                  }}>
+                  Objets non possédés :
+                </Text>
+                <View style={{position: 'absolute', right: 5, top: 22}}>
+                  <TouchableOpacity onPress={showObjects}>
+                    <View>
+                      <FontAwesomeIcon icon={faXmark} size={30} color="red" />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              </View>
             )}
 
             {inventoriesNoPossession[0]}

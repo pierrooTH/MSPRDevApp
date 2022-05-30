@@ -2,6 +2,9 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import HomeScreen from './HomeScreen';
 import QrCode from './QrCode';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faHouse, faQrcode} from '@fortawesome/free-solid-svg-icons';
+import {View} from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -15,13 +18,10 @@ export default function Home({route}) {
         headerShown: false,
         tabBarLabelStyle: {
           color: 'white',
-          fontSize: 10,
           fontWeight: 'bold',
         },
         tabBarStyle: {
-          height: 70,
           backgroundColor: '#659224',
-          position: 'absolute',
         },
       }}>
       <Tab.Screen
@@ -29,8 +29,15 @@ export default function Home({route}) {
         component={HomeScreen}
         options={{
           tabBarLabel: 'Accueil',
-          tabBarIconStyle: {display: 'none'},
-          tabBarLabelStyle: {color: 'white', fontSize: 15, fontWeight: 'bold'},
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faHouse}
+                size={26}
+                color={focused ? '#344913' : 'white'}
+              />
+            </View>
+          ),
         }}
         initialParams={{user: user, pseudo: pseudo}}
       />
@@ -39,8 +46,15 @@ export default function Home({route}) {
         component={QrCode}
         options={{
           tabBarLabel: 'Qr Code',
-          tabBarIconStyle: {display: 'none'},
-          tabBarLabelStyle: {color: 'white', fontSize: 15, fontWeight: 'bold'},
+          tabBarIcon: ({focused}) => (
+            <View>
+              <FontAwesomeIcon
+                icon={faQrcode}
+                size={26}
+                color={focused ? '#344913' : 'white'}
+              />
+            </View>
+          ),
         }}
         initialParams={{user: user, pseudo: pseudo}}
       />
