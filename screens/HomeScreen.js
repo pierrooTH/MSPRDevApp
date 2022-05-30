@@ -1,14 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {Button, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import axios from 'axios';
-import CheckBox from '@react-native-community/checkbox';
 
 const HomeScreen = ({route}) => {
   const pseudo = route.params.pseudo;
@@ -16,6 +8,7 @@ const HomeScreen = ({route}) => {
   const [inventoryInPossession, setInventoryInPossession] = useState([]);
   const [inventoryNoPossession, setInventoryNoPossession] = useState([]);
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [show, setShow] = useState(false);
 
   const getInventory = async () => {
     try {
@@ -68,18 +61,20 @@ const HomeScreen = ({route}) => {
 
   const inventoriesNoPossession = inventoryNoPossession.map(i => {
     return i.inventories.map((inv, i) => {
-      return (
-        <View key={i} style={{flexDirection: 'column'}}>
-          <View
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: 30,
-            }}>
-            <Text style={{fontSize: 20}}>{inv.name}</Text>
+      if (show) {
+        return (
+          <View key={i} style={{flexDirection: 'column'}}>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: 30,
+              }}>
+              <Text style={{fontSize: 20}}>{inv.name}</Text>
+            </View>
           </View>
-        </View>
-      );
+        );
+      }
     });
   });
 
@@ -88,21 +83,42 @@ const HomeScreen = ({route}) => {
       return (
         <Image style={styles.img} source={require('../assets/cberthier.png')} />
       );
-    } /*else if (pseudo === 'jmacclane') {
-      return <Image style={styles.img} source={require('../assets/jmacclane.png')} />;
+    } else if (pseudo === 'jmacclane') {
+      return (
+        <Image style={styles.img} source={require('../assets/jmacclane.png')} />
+      );
     } else if (pseudo === 'afoley') {
-      return <Image style={styles.img} source={require('../assets/afoley.png')} />;
+      return (
+        <Image style={styles.img} source={require('../assets/afoley.png')} />
+      );
     } else if (pseudo === 'jrouletabille') {
-      return <Image style={styles.img} source={require('../assets/jrouletabille.png')} />;
+      return (
+        <Image
+          style={styles.img}
+          source={require('../assets/jrouletabille.png')}
+        />
+      );
     } else if (pseudo === 'jwest') {
-      return <Image style={styles.img} source={require('../assets/jwest.png')} />;
+      return (
+        <Image style={styles.img} source={require('../assets/jwest.png')} />
+      );
     } else if (pseudo === 'mriggs') {
-      return <Image style={styles.img} source={require('../assets/mriggs.png')} />;
+      return (
+        <Image style={styles.img} source={require('../assets/mriggs.png')} />
+      );
     } else if (pseudo === 'sconnor') {
-      return <Image style={styles.img} source={require('../assets/sconnor.png')} />;
+      return (
+        <Image style={styles.img} source={require('../assets/sconnor.png')} />
+      );
     } else if (pseudo === 'sholmes') {
-      return <Image style={styles.img} source={require('../assets/sholmes.png')} />;
-    }*/
+      return (
+        <Image style={styles.img} source={require('../assets/sholmes.png')} />
+      );
+    }
+  };
+
+  const showObjects = () => {
+    setShow(!show);
   };
 
   return (
@@ -128,32 +144,51 @@ const HomeScreen = ({route}) => {
             marginLeft: 'auto',
             marginRight: 'auto',
             paddingBottom: 30,
-            marginBottom: 30,
+            marginBottom: 70,
           }}>
           <View style={{flexDirection: 'column'}}>
             <Text
               style={{
                 marginTop: 20,
                 textAlign: 'center',
-                fontSize: 30,
+                fontSize: 25,
                 fontWeight: 'bold',
-                color: '#659224',
+                color: 'black',
               }}>
               Objets en possession :
             </Text>
             {inventories[0]}
           </View>
+          <View
+            style={{
+              marginTop: 30,
+              backgroundColor: '#659224',
+              color: 'white',
+              width: '50%',
+              marginRight: 'auto',
+              marginLeft: 'auto',
+              borderRadius: 8,
+            }}>
+            <Button
+              color="white"
+              title="Voir les autres objets"
+              onPress={showObjects}
+            />
+          </View>
           <View style={{flexDirection: 'column'}}>
-            <Text
-              style={{
-                marginTop: 20,
-                textAlign: 'center',
-                fontSize: 30,
-                fontWeight: 'bold',
-                color: '#659224',
-              }}>
-              Objets non possédés :
-            </Text>
+            {show && (
+              <Text
+                style={{
+                  marginTop: 20,
+                  textAlign: 'center',
+                  fontSize: 2,
+                  fontWeight: 'bold',
+                  color: 'black',
+                }}>
+                Objets non possédés :
+              </Text>
+            )}
+
             {inventoriesNoPossession[0]}
           </View>
         </View>
@@ -173,7 +208,7 @@ const styles = StyleSheet.create({
     height: 200,
     marginRight: 'auto',
     marginLeft: 'auto',
-    marginTop: 40,
+    marginTop: 20,
   },
 });
 

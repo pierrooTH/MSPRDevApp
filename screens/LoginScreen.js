@@ -1,44 +1,38 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
-
 import React, {useState} from 'react';
 import {
   Button,
   Image,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   Platform,
   StyleSheet,
-  Text,
   TextInput,
-  useColorScheme,
   KeyboardAvoidingView,
   View,
 } from 'react-native';
 import axios from 'axios';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useHeaderHeight} from '@react-navigation/elements';
-import {re} from '@babel/core/lib/vendor/import-meta-resolve';
 
 const LoginScreen = ({navigation}) => {
   const headerHeight = useHeaderHeight();
   const [pseudo, setPseudo] = useState('');
   const [password, setPassword] = useState('');
+
+  const storeDataJSON = async value => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('user', jsonValue);
+    } catch (e) {
+      alert(e);
+    }
+  };
+
+  const storeData = async value => {
+    try {
+      await AsyncStorage.setItem('pseudo', value);
+    } catch (e) {
+      alert(e);
+    }
+  };
 
   const baseUrl = 'http://127.0.0.1:8000';
 
@@ -53,9 +47,12 @@ const LoginScreen = ({navigation}) => {
         password: password,
       });
       if (response.status === 200) {
+        console.log(response.data);
+        await storeDataJSON(response.data);
+        await storeData(pseudo);
         setPseudo('');
         setPassword('');
-        navigation.navigate('HomeScreen', {
+        navigation.navigate('Home', {
           user: response.data,
           pseudo: pseudo,
         });
