@@ -7,19 +7,27 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Modal,
   View,
+  Pressable,
 } from 'react-native';
 import axios from 'axios';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faXmark} from '@fortawesome/free-solid-svg-icons';
+import {
+  faXmark,
+  faArrowRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
 const HomeScreen = ({route}) => {
   const pseudo = route.params.pseudo;
   const user = route.params.user;
   const [inventoryInPossession, setInventoryInPossession] = useState([]);
   const [inventoryNoPossession, setInventoryNoPossession] = useState([]);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [show, setShow] = useState(false);
+  const navigation = useNavigation();
 
   const baseUrl =
     Platform.OS === 'ios' ? 'http://127.0.0.1:8000' : 'http://10.0.2.2:8000';
@@ -135,6 +143,17 @@ const HomeScreen = ({route}) => {
     setShow(!show);
   };
 
+  const submitButton = async () => {
+    try {
+      await AsyncStorage.removeItem('user');
+      await AsyncStorage.removeItem('pseudo');
+      setModalVisible(false);
+      navigation.navigate('LoginScreen');
+    } catch (e) {
+      alert(e);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text
@@ -148,6 +167,42 @@ const HomeScreen = ({route}) => {
         Bienvenue, {'\n'}
         <Text>{pseudo}</Text>
       </Text>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Voulez-vous vous déconnecter ?</Text>
+            <View style={{flexDirection: 'row'}}>
+              <Pressable
+                style={[styles.button, styles.submitBtn]}
+                onPress={submitButton}>
+                <Text style={styles.textStyle}>Se deconnecter</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Text style={styles.textStyle}>Annuler</Text>
+              </Pressable>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <View style={{position: 'absolute', right: 20, top: 90}}>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
+          <View>
+            <FontAwesomeIcon
+              icon={faArrowRightFromBracket}
+              size={30}
+              color="black"
+            />
+          </View>
+        </TouchableOpacity>
+      </View>
       {returnImage()}
       <ScrollView style={{width: '100%', marginTop: 20, marginBottom: 20}}>
         <View
@@ -234,6 +289,50 @@ const styles = StyleSheet.create({
     marginRight: 'auto',
     marginLeft: 'auto',
     marginTop: 20,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    marginTop: 70,
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    margin: 5,
+  },
+  submitBtn: {
+    backgroundColor: '#659224',
+  },
+  buttonClose: {
+    backgroundColor: '#659224',
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    marginBottom: 10,
+    fontSize: 18,
+    textAlign: 'center',
   },
 });
 
