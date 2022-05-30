@@ -33,7 +33,7 @@ const QrCode = ({route}) => {
   useEffect(() => {
     setTimeout(function () {
       setShowElement(false);
-    }, 4000);
+    }, 5000);
   }, []);
 
   const onPressBtn = () => {
