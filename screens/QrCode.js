@@ -74,8 +74,8 @@ const QrCode = ({route}) => {
             </View>
           )}
         </View>
-        {!showInfos && (
-          <View style={{margin: 30}}>
+        {!showInfos && showElement && (
+          <View style={{margin: 30, position: 'absolute', bottom: 5, left: 5}}>
             <TouchableOpacity onPress={onPressBtn}>
               <View>
                 <FontAwesomeIcon icon={faCircleInfo} size={40} color="white" />
@@ -84,7 +84,7 @@ const QrCode = ({route}) => {
           </View>
         )}
 
-        {showInfos && (
+        {showInfos && showElement && (
           <View
             style={{
               backgroundColor: 'white',
@@ -94,8 +94,22 @@ const QrCode = ({route}) => {
               borderRadius: 8,
               padding: 10,
               marginTop: 40,
+              position: 'absolute',
+              bottom: 10,
+              left: 20,
             }}>
-            <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <View style={{width: '80%'}}>
+                <Text>
+                  Veuillez scanner votre QR code pour entrer dans la salle
+                  sécurisée afin de récupérer votre équipement.
+                </Text>
+              </View>
               <TouchableOpacity
                 style={{marginBottom: 5, alignItems: 'flex-end'}}
                 onPress={onPressBtn}>
@@ -103,11 +117,6 @@ const QrCode = ({route}) => {
                   <FontAwesomeIcon icon={faXmark} size={20} color="black" />
                 </View>
               </TouchableOpacity>
-              <Text>
-                Une fois le QR Code présenté devant le scan, vous aurez
-                l'autorisation d'entrer dans la salle sécurisée afin de
-                récupérer votre équipement.
-              </Text>
             </View>
           </View>
         )}
