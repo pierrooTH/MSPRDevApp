@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
   Button,
   Image,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -20,16 +21,19 @@ const HomeScreen = ({route}) => {
   const [toggleCheckBox, setToggleCheckBox] = useState(false);
   const [show, setShow] = useState(false);
 
+  const baseUrl =
+    Platform.OS === 'ios' ? 'http://127.0.0.1:8000' : 'http://10.0.2.2:8000';
+
   const getInventory = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/inventory?user=${user.user.id}&in_possession=True`,
+        `${baseUrl}/api/inventory?user=${user.user.id}&in_possession=True`,
       );
       if (response.status === 200) {
         setInventoryInPossession(response.data);
         try {
           const dataInventoryNoInPossession = await axios.get(
-            `http://127.0.0.1:8000/api/inventory?user=${user.user.id}&in_possession=False`,
+            `${baseUrl}/api/inventory?user=${user.user.id}&in_possession=False`,
           );
           if (dataInventoryNoInPossession.status === 200) {
             setInventoryNoPossession(dataInventoryNoInPossession.data);
@@ -154,7 +158,7 @@ const HomeScreen = ({route}) => {
             marginLeft: 'auto',
             marginRight: 'auto',
             paddingBottom: 30,
-            marginBottom: 70,
+            marginBottom: 30,
           }}>
           <View style={{flexDirection: 'column'}}>
             <Text
@@ -225,8 +229,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   img: {
-    width: 270,
-    height: 200,
+    width: '90%',
+    height: 230,
     marginRight: 'auto',
     marginLeft: 'auto',
     marginTop: 20,

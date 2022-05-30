@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import axios from 'axios';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleInfo, faXmark} from '@fortawesome/free-solid-svg-icons';
@@ -9,10 +16,12 @@ const QrCode = ({route}) => {
   const [showInfos, setShowInfos] = useState(false);
   const user = route.params.user;
   const pseudo = route.params.pseudo;
+  const baseUrl =
+    Platform.OS === 'ios' ? 'http://127.0.0.1:8000' : 'http://10.0.2.2:8000';
   const getQrCodeData = async () => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/qr-code?user=${user.user.id}`,
+        `${baseUrl}/api/qr-code?user=${user.user.id}`,
       );
       if (response.status === 200) {
         setQrCode(response.data);
