@@ -142,7 +142,7 @@ const HomeScreen = ({route}) => {
           color: 'white',
           fontSize: 30,
           fontWeight: 'bold',
-          marginTop: 70,
+          marginTop: Platform.OS === 'ios' ? 70 : 30,
           textAlign: 'center',
         }}>
         Bienvenue, {'\n'}
@@ -185,7 +185,7 @@ const HomeScreen = ({route}) => {
             }}>
             {!show && (
               <Button
-                color="white"
+                color={Platform.OS === 'ios' ? 'white' : '#659224'}
                 title="Voir les autres objets"
                 onPress={showObjects}
               />
