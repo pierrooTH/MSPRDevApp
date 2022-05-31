@@ -16,8 +16,7 @@ const QrCode = ({route}) => {
   const [showInfos, setShowInfos] = useState(false);
   const user = route.params.user;
   const pseudo = route.params.pseudo;
-  const baseUrl =
-    Platform.OS === 'ios' ? 'http://127.0.0.1:8000' : 'http://10.0.2.2:8000';
+  const baseUrl = 'https://apimspr.herokuapp.com';
   const getQrCodeData = async () => {
     try {
       const response = await axios.get(
@@ -33,6 +32,8 @@ const QrCode = ({route}) => {
       alert('Id incorrect');
     }
   };
+
+  console.log(qrCode);
 
   useEffect(() => {
     getQrCodeData();

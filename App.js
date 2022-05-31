@@ -40,47 +40,43 @@ const App = () => {
     };
   }, []);
 
-  if (Object.keys(currentUserData).length > 0 && pseudo !== '') {
-    return (
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName={currentUserData ? 'Home' : 'LoginScreen'}
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: '#385fc2',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              color: 'white',
-              fontSize: 25,
-              fontFamily: 'Roboto-Regular',
-            },
-          }}>
-          <Stack.Screen
-            name="LoginScreen"
-            component={LoginScreen}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{headerShown: false}}
-            initialParams={{
-              user: currentUserData,
-              pseudo: pseudo,
-            }}
-          />
-          <Stack.Screen
-            name="HomeScreen"
-            component={HomeScreen}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  } else {
-    return <Text>Loading...</Text>;
-  }
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName={currentUserData ? 'Home' : 'LoginScreen'}
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#385fc2',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            color: 'white',
+            fontSize: 25,
+            fontFamily: 'Roboto-Regular',
+          },
+        }}>
+        <Stack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{headerShown: false}}
+          initialParams={{
+            user: currentUserData,
+            pseudo: pseudo,
+          }}
+        />
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 };
 
 export default App;
